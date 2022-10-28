@@ -512,12 +512,6 @@ with timer("Process credit card balance"):
     gc.collect()
 
 
-# In[17]:
-
-
-df.sort_values('index')
-
-
 # from sklearn import decomposition
 # from sklearn import preprocessing
 # from functions import *
@@ -585,8 +579,6 @@ y=df2[['TARGET']]
 from sklearn.model_selection import train_test_split
 past_df=df2[df2['TARGET'].notnull()]
 train_df, test_df = train_test_split(df2[df2['TARGET'].notnull()], test_size=0.33)
-display(train_df)
-display(test_df)
 ftest_df = df2[df2['TARGET'].isnull()]
 ftest_df
 
@@ -658,15 +650,11 @@ test_under = pd.concat([test_under, ftest_df], axis=0)
 # # summarize performance
 # print('Mean AUROC: %.3f' % np.mean(scores))
 
+# submission_file_name = "submission_kernel01.csv"
+# with timer("Run LightGBM with kfold"):
+#     feat_importance = kfold_lightgbm(test_under, num_folds= 10, stratified= False)
+
 # In[28]:
-
-
-submission_file_name = "submission_kernel01.csv"
-with timer("Run LightGBM with kfold"):
-    feat_importance = kfold_lightgbm(test_under, num_folds= 10, stratified= False)
-
-
-# In[29]:
 
 
 import collections
@@ -681,14 +669,14 @@ print("total class of 1 and 0:",y_past['TARGET'].value_counts())# plot the count
 y_past['TARGET'].value_counts().plot(kind='bar', title='count (target)')
 
 
-# In[30]:
+# In[29]:
 
 
 print("total class of 1 and 0:",y_rus['TARGET'].value_counts())# plot the count after under-sampeling
 y_rus['TARGET'].value_counts().plot(kind='bar', title='count (target)')
 
 
-# In[31]:
+# In[30]:
 
 
 datarus=x_rus.copy()
@@ -696,42 +684,38 @@ datarus['TARGET']=y_rus
 datarus
 
 
-# In[32]:
+# In[31]:
 
 
 datarus2 = pd.concat([datarus, ftest_df], axis=0)
 datarus2
 
 
-# In[33]:
+# submission_file_name = "submission_kernel02.csv"
+# with timer("Run LightGBM with kfold"):
+#     feat_importance = kfold_lightgbm(datarus2, num_folds= 10, stratified= False)
 
-
-submission_file_name = "submission_kernel02.csv"
-with timer("Run LightGBM with kfold"):
-    feat_importance = kfold_lightgbm(datarus2, num_folds= 10, stratified= False)
-
-
-# In[34]:
+# In[32]:
 
 
 datarus.index=datarus['SK_ID_CURR']
 datarus
 
 
-# In[35]:
+# In[33]:
 
 
 train_df, test_df = train_test_split(datarus, test_size=0.33)
 
 
-# In[36]:
+# In[34]:
 
 
 X_train=train_df.drop(columns=[ 'TARGET'])
 y_train=train_df[['TARGET']]
 
 
-# In[37]:
+# In[35]:
 
 
 X_test=test_df.drop(columns=[ 'TARGET'])
@@ -742,114 +726,41 @@ y_test=test_df[['TARGET']]
 
 # y_train=y_train.drop([60477],axis=0)
 
-# In[38]:
+# In[36]:
 
 
 X_train2=X_train.fillna(0)
 
 
-# In[39]:
+# In[37]:
 
 
 X_test2=X_test.fillna(0)
 
 
-# In[40]:
+# In[38]:
 
 
 X_train_re=X_train[['PAYMENT_RATE',  'EXT_SOURCE_3', 'EXT_SOURCE_2', 'EXT_SOURCE_1', 'DAYS_BIRTH', 'DAYS_EMPLOYED', 'DAYS_REGISTRATION', 'DAYS_ID_PUBLISH', 'DAYS_LAST_PHONE_CHANGE', 'DAYS_EMPLOYED_PERC', 'AMT_ANNUITY', 'ANNUITY_INCOME_PERC', 'AMT_GOODS_PRICE', 'REGION_POPULATION_RELATIVE', 'INCOME_CREDIT_PERC', 'AMT_CREDIT', 'OWN_CAR_AGE', 'INCOME_PER_PERSON', 'POS_MONTHS_BALANCE_MEAN', 'AMT_REQ_CREDIT_BUREAU_YEAR', 'HOUR_APPR_PROCESS_START', 'AMT_INCOME_TOTAL', 'POS_MONTHS_BALANCE_MAX', 'TOTALAREA_MODE', 'PREV_DAYS_DECISION_MAX', 'CODE_GENDER', 'PREV_APP_CREDIT_PERC_MIN', 'PREV_DAYS_DECISION_MEAN', 'YEARS_BEGINEXPLUATATION_MODE', 'LIVINGAREA_MODE', 'PREV_AMT_ANNUITY_MEAN', 'PREV_APP_CREDIT_PERC_MEAN', 'AMT_REQ_CREDIT_BUREAU_QRT', 'PREV_CNT_PAYMENT_MEAN', 'PREV_DAYS_DECISION_MIN', 'PREV_AMT_ANNUITY_MIN', 'NAME_FAMILY_STATUS_Married', 'NAME_EDUCATION_TYPE_Highereducation', 'NAME_CONTRACT_TYPE_Cashloans', 'FLAG_DOCUMENT_3']]
 X_train_re=X_train_re.fillna(0)
 
 
-# In[41]:
+# In[39]:
 
 
 X_test_re=X_test[['PAYMENT_RATE',  'EXT_SOURCE_3', 'EXT_SOURCE_2', 'EXT_SOURCE_1', 'DAYS_BIRTH', 'DAYS_EMPLOYED', 'DAYS_REGISTRATION', 'DAYS_ID_PUBLISH', 'DAYS_LAST_PHONE_CHANGE', 'DAYS_EMPLOYED_PERC', 'AMT_ANNUITY', 'ANNUITY_INCOME_PERC', 'AMT_GOODS_PRICE', 'REGION_POPULATION_RELATIVE', 'INCOME_CREDIT_PERC', 'AMT_CREDIT', 'OWN_CAR_AGE', 'INCOME_PER_PERSON', 'POS_MONTHS_BALANCE_MEAN', 'AMT_REQ_CREDIT_BUREAU_YEAR', 'HOUR_APPR_PROCESS_START', 'AMT_INCOME_TOTAL', 'POS_MONTHS_BALANCE_MAX', 'TOTALAREA_MODE', 'PREV_DAYS_DECISION_MAX', 'CODE_GENDER', 'PREV_APP_CREDIT_PERC_MIN', 'PREV_DAYS_DECISION_MEAN', 'YEARS_BEGINEXPLUATATION_MODE', 'LIVINGAREA_MODE', 'PREV_AMT_ANNUITY_MEAN', 'PREV_APP_CREDIT_PERC_MEAN', 'AMT_REQ_CREDIT_BUREAU_QRT', 'PREV_CNT_PAYMENT_MEAN', 'PREV_DAYS_DECISION_MIN', 'PREV_AMT_ANNUITY_MIN', 'NAME_FAMILY_STATUS_Married', 'NAME_EDUCATION_TYPE_Highereducation', 'NAME_CONTRACT_TYPE_Cashloans', 'FLAG_DOCUMENT_3']]
 X_test_re=X_test_re.fillna(0)
 
 
-# In[42]:
-
-
-X_train_re
-
-
-# In[43]:
-
-
-y_train
-
-
-# In[44]:
-
-
-# load library
-from sklearn.svm import LinearSVC
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import f1_score
-    
-# we can add class_weight='balanced' to add panalize mistake
-svc_model = LinearSVC(class_weight='balanced')
-
-svc_model.fit(X_train_re, y_train['TARGET'])
-
-svc_predict = svc_model.predict(X_test_re)# check performance
-print('ROCAUC score:',roc_auc_score(y_test, svc_predict))
-print('Accuracy score:',accuracy_score(y_test, svc_predict))
-print('F1 score:',f1_score(y_test, svc_predict))
-
-
-# In[45]:
-
-
-# load library
-from sklearn.svm import LinearSVC
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import f1_score
-    
-# we can add class_weight='balanced' to add panalize mistake
-svc_model = LinearSVC(class_weight='balanced')
-
-svc_model.fit(X_train2, y_train['TARGET'])
-
-svc_predict = svc_model.predict(X_test2)# check performance
-print('ROCAUC score:',roc_auc_score(y_test, svc_predict))
-print('Accuracy score:',accuracy_score(y_test, svc_predict))
-print('F1 score:',f1_score(y_test, svc_predict))
-
-
-# In[46]:
-
 
 class_weights = {
   0: 1,
-  1: 100,
+  1: 10,
 }
 
 
-# In[47]:
 
-
-# load library
-from sklearn.svm import LinearSVC
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import f1_score
-
-for i in [5,10,20,50,100]:
-    class_weights[1]=i
-    # we can add class_weight='balanced' to add panalize mistake
-    svc_model = LinearSVC(class_weight=class_weights)
-    
-    svc_model.fit(X_train_re, y_train['TARGET'])
-    
-    svc_predict = svc_model.predict(X_test_re)# check performance
-    print('Credit weight = ',i)
-    print('ROCAUC score:',roc_auc_score(y_test, svc_predict))
-    print('Accuracy score:',accuracy_score(y_test, svc_predict))
-    print('F1 score:',f1_score(y_test, svc_predict),'\n')
-
-
-# In[48]:
+# In[46]:
 
 
 from sklearn.ensemble import RandomForestClassifier
@@ -861,14 +772,8 @@ for i in [10]:
     
     rf_model.fit(X_train_re, y_train['TARGET'])
     
-    rf_predict = svc_model.predict(X_test_re)# check performance
-    print('Credit weight = ',i)
-    print('ROCAUC score:',roc_auc_score(y_test, rf_predict))
-    print('Accuracy score:',accuracy_score(y_test, rf_predict))
-    print('F1 score:',f1_score(y_test, rf_predict),'\n')
 
-
-# In[49]:
+# In[47]:
 
 
 df_re=df[['PAYMENT_RATE',  'EXT_SOURCE_3', 'EXT_SOURCE_2', 'EXT_SOURCE_1', 'DAYS_BIRTH', 'DAYS_EMPLOYED', 'DAYS_REGISTRATION', 'DAYS_ID_PUBLISH', 'DAYS_LAST_PHONE_CHANGE', 'DAYS_EMPLOYED_PERC', 'AMT_ANNUITY', 'ANNUITY_INCOME_PERC', 'AMT_GOODS_PRICE', 'REGION_POPULATION_RELATIVE', 'INCOME_CREDIT_PERC', 'AMT_CREDIT', 'OWN_CAR_AGE', 'INCOME_PER_PERSON', 'POS_MONTHS_BALANCE_MEAN', 'AMT_REQ_CREDIT_BUREAU_YEAR', 'HOUR_APPR_PROCESS_START', 'AMT_INCOME_TOTAL', 'POS_MONTHS_BALANCE_MAX', 'TOTALAREA_MODE', 'PREV_DAYS_DECISION_MAX', 'CODE_GENDER', 'PREV_APP_CREDIT_PERC_MIN', 'PREV_DAYS_DECISION_MEAN', 'YEARS_BEGINEXPLUATATION_MODE', 'LIVINGAREA_MODE', 'PREV_AMT_ANNUITY_MEAN', 'PREV_APP_CREDIT_PERC_MEAN', 'AMT_REQ_CREDIT_BUREAU_QRT', 'PREV_CNT_PAYMENT_MEAN', 'PREV_DAYS_DECISION_MIN', 'PREV_AMT_ANNUITY_MIN', 'NAME_FAMILY_STATUS_Married', 'NAME_EDUCATION_TYPE_Highereducation', 'NAME_CONTRACT_TYPE_Cashloans', 'FLAG_DOCUMENT_3']]
@@ -876,14 +781,20 @@ df_re=df_re.fillna(0)
 df_re
 
 
-# In[56]:
+# In[48]:
+
+
+df_re.to_csv('clients_list.csv')
+
+
+# In[49]:
 
 
 instance = df_re.iloc[[100002]]
 print ("Instance 0 prediction:", rf_model.predict(instance))
 
 
-# In[57]:
+# In[50]:
 
 
 from treeinterpreter import treeinterpreter as ti
@@ -892,13 +803,13 @@ from sklearn.ensemble import RandomForestRegressor
 prediction, bias, contributions = ti.predict(rf_model, instance)
 
 
-# In[58]:
+# In[51]:
 
 
 contributions[0][:,0]
 
 
-# In[59]:
+# In[52]:
 
 
 localfi = pd.DataFrame()  
@@ -909,10 +820,25 @@ localfi=localfi.sort_values(by=['abs'],ascending=False)
 localfi
 
 
-# In[60]:
+# In[58]:
 
 
-rf_predict
+def localf(id):
+    instance = df_re.iloc[[id]]
+    print ("Instance 0 prediction:", rf_model.predict(instance))
+    prediction, bias, contributions = ti.predict(rf_model, instance)
+    localfi = pd.DataFrame()  
+    localfi['col']=X_train_re.columns
+    localfi['val']=contributions[0][:,0]
+    localfi['abs']=abs(localfi['val'])
+    localfi=localfi.sort_values(by=['abs'],ascending=False)
+    return localfi
+
+
+# In[59]:
+
+
+localf(100002)
 
 
 # In[ ]:
