@@ -6,7 +6,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestClassifier
  
-rf_model = pickle.load(open('model.sav', 'rb'))
+rf_model = pickle.load(open('model.pkl', 'rb'))
 df=pd.read_csv('clients_list.csv')
 df.index=df['SK_ID_CURR']
 df=df.drop(columns=['SK_ID_CURR'])
