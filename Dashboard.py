@@ -34,21 +34,23 @@ if len(id) != 0:
     
         localfi=requests.post(url = "http://127.0.0.1:8000/localfi/{}".format(id)).json()
         localfi = pd.DataFrame.from_dict(localfi)
+        localfi=localfi.sort_values(by='val', ascending=False)
         bar_chart = alt.Chart(localfi, title="Feature importance for one client").mark_bar().encode(
             y='val',
             x=alt.X('col',sort='-y'),
         )
  
         st.altair_chart(bar_chart, use_container_width=True)
-
+        st.bar_chart(data=localfi, x='col', y='val', use_container_width=True)
+        
         gfi=requests.post(url = "http://127.0.0.1:8000/gfi/{}".format(id)).json()
         gfi = pd.DataFrame.from_dict(gfi)
         bar_chart2 = alt.Chart(gfi, title="Feature importance for all clients").mark_bar().encode(
             y='val',
             x=alt.X('col',sort='-y'),
-        )
- 
+        )       
         st.altair_chart(bar_chart2, use_container_width=True)
+        st.bar_chart(data=gfi, x='col', y='val', use_container_width=True)
         data = pd.read_csv('clients_list_predict.csv')
         
         class_0 = data[data['Predicted'] == 0]
