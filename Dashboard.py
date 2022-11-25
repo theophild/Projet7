@@ -1,10 +1,8 @@
-import pandas as pd
-import numpy as np
+from API import pd
+from API import np
 import altair as alt
 import streamlit as st
 import requests
-import seaborn as sns
-import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import plotly.express as px
