@@ -1,4 +1,3 @@
-﻿altair==4.2.0
 fastapi==0.85.2
 scikit-learn-intelex
 streamlit==1.14.0
