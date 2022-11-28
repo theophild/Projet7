@@ -1,17 +1,20 @@
-from API import pd
-from API import np
+import pandas as pd
+import numpy as np
 import altair as alt
 import streamlit as st
 import requests
+import seaborn as sns
+import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 import plotly.express as px
+from main import load_data
 
 id=st.text_input("Your ID", key="ID")
 if len(id) != 0:
        
         pred=requests.post(url = "http://127.0.0.1:8000/predict/{}".format(id)).json()
-        if pred==0:
+        if pred==1:
             st.write("Your credit has been denied")
         else: st.write("Your credit has been accepted")
             
@@ -49,7 +52,7 @@ if len(id) != 0:
         )       
         st.altair_chart(bar_chart2, use_container_width=True)
         st.bar_chart(data=gfi, x='col', y='val', use_container_width=True)
-        data = pd.read_csv('clients_list_predict.csv')
+        data = load_data('clients_list_predict.csv', 'csv')
         
         class_0 = data[data['Predicted'] == 0]
         class_1 = data[data['Predicted'] == 1] 
