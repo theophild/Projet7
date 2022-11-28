@@ -5,11 +5,25 @@ from treeinterpreter import treeinterpreter as ti
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestClassifier
+import boto3
  
-rf_model = pickle.load(open('model.pkl', 'rb'))
-df=pd.read_csv('clients_list.csv')
-df.index=df['SK_ID_CURR']
-df=df.drop(columns=['SK_ID_CURR'])
+
+def load_data(name, form):
+    s3 = boto3.resource(
+    service_name='s3',
+    region_name='eu-west-3',
+    aws_access_key_id='AKIAR66Z64XBX3KEK7DV',
+    aws_secret_access_key='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',
+    )
+    if form == 'csv' :
+        obj = s3.Bucket('projet7dubois').Object(name).get()
+        data = pd.read_csv(obj['Body'], index_col=0)
+    if form == 'pkl' :
+        data = pickle.loads(s3.Bucket("projet7dubois").Object(name).get()['Body'].read())
+    return data
+
+df=load_data('clients_list.csv' , 'csv')
+rf_model = load_data('model.pkl', 'pkl')
 
 
 def pred(id):
@@ -18,7 +32,7 @@ def pred(id):
 
 def score(id):
     instance = df.iloc[[id]]
-    return rf_model.predict_proba(instance)[0][0]
+    return 1-rf_model.predict_proba(instance)[0][0]
 
 def localf(id):
     instance = df.iloc[[id]]

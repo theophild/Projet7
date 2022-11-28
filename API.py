@@ -1,5 +1,3 @@
-import numpy as np
-import pandas as pd
 from typing import Union
 from pydantic import BaseModel
 from fastapi import FastAPI, File, UploadFile
