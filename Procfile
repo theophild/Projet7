@@ -1,2 +1,2 @@
-web: uvicorn API:app --reload
-web: streamlit run Dashboard.py
+web: python terminal1.py
+web: python terminal2.py
