@@ -15,8 +15,8 @@ if len(id) != 0:
        
         pred=requests.post(url = "http://127.0.0.1:8000/predict/{}".format(id)).json()
         if pred==1:
-            st.write("Your credit has been denied")
-        else: st.write("Your credit has been accepted")
+            st.write("Your credit has been accepted")
+        else: st.write("Your credit has been denied")
             
         score=requests.post(url = "http://127.0.0.1:8000/score/{}".format(id)).json()
         fig = go.Figure(go.Indicator(
