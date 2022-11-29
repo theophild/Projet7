@@ -1,2 +1,2 @@
-worker: uvicorn API:app --host=127.0.0.1 --port=${PORT:8000}
+worker: uvicorn --port 5000 --host 127.0.0.1 main:app --reload
 web: sh setup.sh && streamlit run Dashboard.py
