@@ -5,7 +5,6 @@ from treeinterpreter import treeinterpreter as ti
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestClassifier
-import boto3
  
 
 rf_model = pickle.load(open('redmodel.pkl', 'rb'))
