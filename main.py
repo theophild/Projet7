@@ -13,15 +13,15 @@ df=df.drop(columns=['Predicted'])
 
 
 def pred(id):
-    instance = df.iloc[[id]]
+    instance = df.loc[[id]]
     return rf_model.predict(instance)[0]
 
 def score(id):
-    instance = df.iloc[[id]]
+    instance = df.loc[[id]]
     return 1-rf_model.predict_proba(instance)[0][0]
 
 def localf(id):
-    instance = df.iloc[[id]]
+    instance = df.loc[[id]]
     prediction, bias, contributions = ti.predict(rf_model, instance)
     localfi = pd.DataFrame()  
     localfi['col']=df.columns
