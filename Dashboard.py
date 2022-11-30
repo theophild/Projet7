@@ -52,7 +52,7 @@ if len(id) != 0:
         )       
         st.altair_chart(bar_chart2, use_container_width=True)
         st.bar_chart(data=gfi, x='col', y='val', use_container_width=True)
-        data = load_data('clients_list_predict.csv', 'csv')
+        data = pd.read_csv('clients_list_reduced.csv')
         
         class_0 = data[data['Predicted'] == 0]
         class_1 = data[data['Predicted'] == 1] 
