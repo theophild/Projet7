@@ -12,12 +12,12 @@ import plotly.express as px
 id=st.text_input("Your ID", key="ID")
 if len(id) != 0:
        
-        pred=requests.post(url = "http://127.0.0.1:8000/predict/{}".format(id)).json()
+        pred=requests.post(url = "https://projet7duboisapi.herokuapp.com/predict/{}".format(id)).json()
         if pred==1:
             st.write("Your credit has been accepted")
         else: st.write("Your credit has been denied")
             
-        score=requests.post(url = "http://127.0.0.1:8000/score/{}".format(id)).json()
+        score=requests.post(url = "https://projet7duboisapi.herokuapp.com/score/{}".format(id)).json()
         fig = go.Figure(go.Indicator(
             domain = {'x': [0, 1], 'y': [0, 1]},
             value = score,
@@ -32,7 +32,7 @@ if len(id) != 0:
 
         st.plotly_chart(fig, use_container_width=True)
     
-        localfi=requests.post(url = "http://127.0.0.1:8000/localfi/{}".format(id)).json()
+        localfi=requests.post(url = "https://projet7duboisapi.herokuapp.com/localfi/{}".format(id)).json()
         localfi = pd.DataFrame.from_dict(localfi)
         localfi=localfi.sort_values(by='val', ascending=False)
         bar_chart = alt.Chart(localfi, title="Feature importance for one client").mark_bar().encode(
@@ -43,7 +43,7 @@ if len(id) != 0:
         st.altair_chart(bar_chart, use_container_width=True)
         st.bar_chart(data=localfi, x='col', y='val', use_container_width=True)
         
-        gfi=requests.post(url = "http://127.0.0.1:8000/gfi/{}".format(id)).json()
+        gfi=requests.post(url = "https://projet7duboisapi.herokuapp.com/gfi/{}".format(id)).json()
         gfi = pd.DataFrame.from_dict(gfi)
         bar_chart2 = alt.Chart(gfi, title="Feature importance for all clients").mark_bar().encode(
             y='val',
@@ -51,7 +51,7 @@ if len(id) != 0:
         )       
         st.altair_chart(bar_chart2, use_container_width=True)
         st.bar_chart(data=gfi, x='col', y='val', use_container_width=True)
-        data=pd.read_csv('clients_list_predict.csv', index_col=0)
+        data=pd.read_csv('clients_list_reduced.csv', index_col=0)
         
         class_0 = data[data['Predicted'] == 0]
         class_1 = data[data['Predicted'] == 1] 
