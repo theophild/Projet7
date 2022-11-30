@@ -22,20 +22,19 @@ def load_data(name, form):
         data = pickle.loads(s3.Bucket("projet7dubois").Object(name).get()['Body'].read())
     return data
 
-df=load_data('clients_list.csv' , 'csv')
-rf_model = load_data('model.pkl', 'pkl')
-
+rf_model = pickle.load(open('model.pkl', 'rb'))
+df=pd.read_csv('clients_list.csv', index_col=0)
 
 def pred(id):
-    instance = df.iloc[[id]]
+    instance = df.loc[[id]]
     return rf_model.predict(instance)[0]
 
 def score(id):
-    instance = df.iloc[[id]]
+    instance = df.loc[[id]]
     return 1-rf_model.predict_proba(instance)[0][0]
 
 def localf(id):
-    instance = df.iloc[[id]]
+    instance = df.loc[[id]]
     prediction, bias, contributions = ti.predict(rf_model, instance)
     localfi = pd.DataFrame()  
     localfi['col']=df.columns
